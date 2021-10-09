@@ -3,17 +3,18 @@ import React from 'react'
 import dtLogo from '../../assets/logo.svg'
 import {Container, Content} from './styles'
 
-interface Props {
-    
+interface HeaderProps {
+    onHandeOpenNewTransactionModal: () => void
 }
 
-export const Header = (props: Props) => {
+export const Header = ( {onHandeOpenNewTransactionModal} : HeaderProps) => {
+
     return (
         <Container>
             <Content> 
                 <img src={dtLogo} alt="dt-money logo" />
 
-                <button>Nova Transação</button>
+                <button onClick={onHandeOpenNewTransactionModal}>Nova Transação</button>
             </Content>
         </Container>
     )
