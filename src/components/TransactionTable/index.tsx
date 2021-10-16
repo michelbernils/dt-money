@@ -1,55 +1,54 @@
-import React, {useEffect} from 'react'
-import { Container } from './style'
-import {api} from '../../services/api'
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
+import { Container } from "../TransactionTable/style";
 
-
-interface Props {
-    
+interface Transaction {
+  id: number;
+  title: string;
+  price: number;
+  type: string;
+  category: string;
+  createdAt: string;
 }
 
-export const TransactionTable = (props: Props) => {
+export function TransactionTable() {
+    
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
+  useEffect(() => {
+    api.get('transactions').then(response => console.log(response.data));
+  }, []);
 
+  return (
+    <Container>
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Valor</th>
+            <th>Categoria</th>
+            <th>Data</th>
+          </tr>
+        </thead>
 
-
-    useEffect(() => {
-        api.get('/transactions')
-        .then(response => console.log(response.data))
-    }, [])
-
-
-    return (
-        <Container>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Titulo</th>
-                        <th>Preço</th>
-                        <th>Categoria</th>
-                        <th>Data</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="title">Desenvolvimento de website</td>
-                        <td className="deposit">R$ 12.000</td>
-                        <td>Venda</td>
-                        <td>13/04/2021</td>
-                    </tr>
-                    <tr>
-                        <td className="title">Desenvolvimento de website</td>
-                        <td className="deposit">R$ 12.000</td>
-                        <td>Venda</td>
-                        <td>13/04/2021</td>
-                    </tr>
-                    <tr>
-                        <td className="title">Desenvolvimento de website</td>
-                        <td className="deposit">R$ 12.000</td>
-                        <td>Venda</td>
-                        <td>13/04/2021</td>
-                    </tr>
-                </tbody>
-            </table>
-        </Container>
-    )
+        <tbody>
+          {transactions.map(transaction => (
+            <tr key={transaction.id}>
+              <td>{transaction.title}</td>
+              <td className={transaction.type}>
+                {new Intl.NumberFormat('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL'
+                }).format(transaction.price)}
+              </td>
+              <td>{transaction.category}</td>
+              <td>
+                {new Intl.DateTimeFormat('pt-BR').format(new Date(transaction.createdAt))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Container>
+  )
 }
