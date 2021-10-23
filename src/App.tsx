@@ -4,6 +4,7 @@ import { Header } from "./components/Header/index";
 import { Dashboard } from "./components/Dashboard/index";
 import { TransactionTable } from "./components/TransactionTable/index";
 import { NewTransactionModal } from "./components/NewTransactionModal/index";
+import { TransactionsProvider } from "./TransactionsContext"
 
 
 import { GlobalStyle } from "./styles/globals";
@@ -22,13 +23,13 @@ function App() {
 
 
   return (
-    <>
+    <TransactionsProvider>
       <Header  onHandeOpenNewTransactionModal={HandeOpenNewTransactionModal}/>
       <Dashboard />
       <TransactionTable />
       <NewTransactionModal isOpen={isNewTransactionModalOpen} onRequestClose={HandeCloseNewTransactionModal}/>
       <GlobalStyle />
-    </>
+    </TransactionsProvider>
   );
 }
 
